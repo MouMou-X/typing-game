@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Macaron Muse Typing Game</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="app">
+      <section class="header">
+        <div class="title">
+          <p class="subtitle">Macaron Muse</p>
+          <h1>Type the classics, taste the glow.</h1>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <span class="label">Streak</span>
+            <span class="value" id="streak">0</span>
+          </div>
+          <div class="stat">
+            <span class="label">Words</span>
+            <span class="value" id="word-count">0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-panel">
+        <div class="article-header">
+          <h2>Famous Articles, softly glowing</h2>
+          <button id="shuffle" type="button">New Muse</button>
+        </div>
+        <p class="article-title" id="article-title"></p>
+        <div class="article-text" id="article-text"></div>
+        <p class="helper">Type without worrying about uppercase or lowercase. Each correct word summons a sugary reaction.</p>
+      </section>
+
+      <section class="typing-panel">
+        <div class="current-word">
+          <span class="label">Now typing</span>
+          <div id="current-word" class="current-word-display">—</div>
+        </div>
+        <div class="typed-buffer" id="typed-buffer"></div>
+        <div class="reaction-layer" id="reaction-layer" aria-live="polite"></div>
+      </section>
+
+      <section class="keyboard" id="keyboard">
+        <div class="row">
+          <span class="key">q</span>
+          <span class="key">w</span>
+          <span class="key">e</span>
+          <span class="key">r</span>
+          <span class="key">t</span>
+          <span class="key">y</span>
+          <span class="key">u</span>
+          <span class="key">i</span>
+          <span class="key">o</span>
+          <span class="key">p</span>
+        </div>
+        <div class="row">
+          <span class="key">a</span>
+          <span class="key">s</span>
+          <span class="key">d</span>
+          <span class="key">f</span>
+          <span class="key">g</span>
+          <span class="key">h</span>
+          <span class="key">j</span>
+          <span class="key">k</span>
+          <span class="key">l</span>
+        </div>
+        <div class="row">
+          <span class="key">z</span>
+          <span class="key">x</span>
+          <span class="key">c</span>
+          <span class="key">v</span>
+          <span class="key">b</span>
+          <span class="key">n</span>
+          <span class="key">m</span>
+          <span class="key wide">space</span>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
