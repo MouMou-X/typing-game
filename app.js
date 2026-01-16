@@ -39,6 +39,7 @@ const streakEl = document.getElementById("streak");
 const wordCountEl = document.getElementById("word-count");
 const shuffleButton = document.getElementById("shuffle");
 const keyboardKeys = Array.from(document.querySelectorAll("[data-key]"));
+const keyboardKeys = Array.from(document.querySelectorAll(".key"));
 
 let words = [];
 let currentIndex = 0;
@@ -52,6 +53,10 @@ const buildWords = (article) => {
   articleTitle.textContent = article.title;
   articleText.innerHTML = "";
   words = article.text.split(/\s+/).filter(Boolean);
+  words = article.text
+    .replace(/[^\w\s'’]/g, "")
+    .split(/\s+/)
+    .filter(Boolean);
 
   words.forEach((word, index) => {
     const span = document.createElement("span");
@@ -156,6 +161,15 @@ const handleKeydown = (event) => {
 
   const keyId = getKeyId(key);
   highlightKey(keyId);
+  const isLetter = /^[a-zA-Z]$/.test(key);
+  const isSpace = key === " " || key === "Spacebar";
+
+  if (!isLetter && !isSpace && key !== "Backspace") {
+    return;
+  }
+
+  const normalizedKey = key.toLowerCase();
+  highlightKey(normalizedKey, isSpace);
 
   if (key === "Backspace") {
     buffer = buffer.slice(0, -1);
@@ -164,6 +178,7 @@ const handleKeydown = (event) => {
   }
 
   if (isSubmit) {
+  if (isSpace) {
     const currentWord = words[currentIndex] || "";
     if (normalize(buffer) === normalize(currentWord)) {
       handleWordComplete();
@@ -176,6 +191,7 @@ const handleKeydown = (event) => {
   }
 
   if (isPrintable) {
+  if (isLetter) {
     buffer += key;
     updateStatus();
 
@@ -201,6 +217,13 @@ const getKeyId = (key) => {
 
 const highlightKey = (keyId) => {
   const match = keyboardKeys.find((keyEl) => keyEl.dataset.key === keyId);
+const highlightKey = (key, isSpace) => {
+  const match = keyboardKeys.find((keyEl) => {
+    if (isSpace) {
+      return keyEl.classList.contains("wide");
+    }
+    return keyEl.textContent === key;
+  });
 
   if (!match) return;
   match.classList.add("active");
