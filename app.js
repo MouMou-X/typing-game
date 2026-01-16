@@ -73,11 +73,32 @@ const buildWords = (article) => {
 
 const updateStatus = () => {
   const currentWord = words[currentIndex] || "";
-  currentWordEl.textContent = currentWord || "—";
+  renderCurrentWord(currentWord, buffer);
   typedBuffer.textContent = buffer || " ";
   wordCountEl.textContent = totalWords.toString();
   streakEl.textContent = streak.toString();
   highlightCurrentWord();
+};
+
+const renderCurrentWord = (word, typed) => {
+  currentWordEl.innerHTML = "";
+  if (!word) {
+    currentWordEl.textContent = "—";
+    return;
+  }
+
+  const normalizedTyped = normalize(typed);
+  word.split("").forEach((letter, index) => {
+    const span = document.createElement("span");
+    span.className = "letter";
+    if (normalizedTyped[index] === normalize(letter)) {
+      span.classList.add("matched");
+    } else {
+      span.classList.add("pending");
+    }
+    span.textContent = letter;
+    currentWordEl.appendChild(span);
+  });
 };
 
 const highlightCurrentWord = () => {
@@ -100,6 +121,15 @@ const showReaction = () => {
     encouragements[Math.floor(Math.random() * encouragements.length)];
   reaction.style.top = `${30 + Math.random() * 30}px`;
   reactionLayer.appendChild(reaction);
+  for (let i = 0; i < 6; i += 1) {
+    const sprinkle = document.createElement("span");
+    sprinkle.className = "sprinkle";
+    sprinkle.style.setProperty("--x", `${(Math.random() - 0.5) * 80}px`);
+    sprinkle.style.setProperty("--y", `${(Math.random() - 0.5) * 60}px`);
+    sprinkle.style.left = `${20 + Math.random() * 60}%`;
+    sprinkle.style.top = `${10 + Math.random() * 40}%`;
+    reaction.appendChild(sprinkle);
+  }
   setTimeout(() => reaction.remove(), 1800);
 };
 

@@ -44,10 +44,10 @@
       <section class="typing-panel">
         <div class="current-word">
           <span class="label">Now typing</span>
-          <span id="current-word">—</span>
+          <div id="current-word" class="current-word-display">—</div>
         </div>
         <div class="typed-buffer" id="typed-buffer"></div>
-        <div class="reaction-layer" id="reaction-layer"></div>
+        <div class="reaction-layer" id="reaction-layer" aria-live="polite"></div>
       </section>
 
       <section class="keyboard" id="keyboard">

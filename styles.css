@@ -26,6 +26,32 @@ body {
   justify-content: center;
   align-items: center;
   padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  filter: blur(0px);
+  opacity: 0.35;
+  z-index: 0;
+}
+
+body::before {
+  background: radial-gradient(circle at 30% 30%, var(--macaron-rose), transparent 70%);
+  top: -80px;
+  left: -40px;
+}
+
+body::after {
+  background: radial-gradient(circle at 60% 40%, var(--macaron-sky), transparent 70%);
+  bottom: -120px;
+  right: -60px;
 }
 
 .app {
@@ -33,6 +59,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-height: 90vh;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
 }
 
 .header {
@@ -179,16 +209,37 @@ body {
   color: var(--soft-ink);
 }
 
-#current-word {
+.current-word-display {
   font-size: 1.8rem;
   font-weight: 700;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.letter {
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: inset 0 0 0 1px rgba(60, 58, 74, 0.08);
+}
+
+.letter.matched {
+  background: var(--macaron-rose);
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.letter.pending {
+  color: var(--soft-ink);
 }
 
 .typed-buffer {
   min-height: 28px;
   padding: 10px 18px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.85);
   box-shadow: var(--shadow);
   min-width: 220px;
   text-align: center;
@@ -209,7 +260,7 @@ body {
   padding: 12px 18px;
   border-radius: 999px;
   font-weight: 700;
-  background: var(--macaron-rose);
+  background: linear-gradient(120deg, var(--macaron-rose), var(--macaron-sky));
   color: var(--ink);
   box-shadow: var(--shadow);
   animation: floatUp 1.8s ease forwards;
@@ -238,6 +289,15 @@ body {
   background: var(--macaron-mint);
 }
 
+.sprinkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--macaron-lemon);
+  animation: sprinkle 1.2s ease forwards;
+}
+
 @keyframes floatUp {
   0% {
     opacity: 0;
@@ -262,6 +322,20 @@ body {
   }
   100% {
     transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes sprinkle {
+  0% {
+    transform: translate(0, 0) scale(0.4);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x), var(--y)) scale(1);
     opacity: 0;
   }
 }
