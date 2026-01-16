@@ -38,6 +38,7 @@ const reactionLayer = document.getElementById("reaction-layer");
 const streakEl = document.getElementById("streak");
 const wordCountEl = document.getElementById("word-count");
 const shuffleButton = document.getElementById("shuffle");
+const keyboardKeys = Array.from(document.querySelectorAll("[data-key]"));
 const keyboardKeys = Array.from(document.querySelectorAll(".key"));
 
 let words = [];
@@ -51,6 +52,7 @@ const normalize = (value) => value.toLowerCase();
 const buildWords = (article) => {
   articleTitle.textContent = article.title;
   articleText.innerHTML = "";
+  words = article.text.split(/\s+/).filter(Boolean);
   words = article.text
     .replace(/[^\w\s'’]/g, "")
     .split(/\s+/)
@@ -149,6 +151,16 @@ const handleWordComplete = () => {
 
 const handleKeydown = (event) => {
   const { key } = event;
+  const isPrintable = key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey;
+  const isSpace = key === " ";
+  const isSubmit = isSpace || key === "Enter";
+
+  if (!isPrintable && key !== "Backspace" && !isSubmit) {
+    return;
+  }
+
+  const keyId = getKeyId(key);
+  highlightKey(keyId);
   const isLetter = /^[a-zA-Z]$/.test(key);
   const isSpace = key === " " || key === "Spacebar";
 
@@ -165,6 +177,7 @@ const handleKeydown = (event) => {
     return;
   }
 
+  if (isSubmit) {
   if (isSpace) {
     const currentWord = words[currentIndex] || "";
     if (normalize(buffer) === normalize(currentWord)) {
@@ -177,6 +190,7 @@ const handleKeydown = (event) => {
     return;
   }
 
+  if (isPrintable) {
   if (isLetter) {
     buffer += key;
     updateStatus();
@@ -188,6 +202,21 @@ const handleKeydown = (event) => {
   }
 };
 
+const getKeyId = (key) => {
+  if (key === " ") {
+    return "space";
+  }
+  if (key === "Backspace") {
+    return "backspace";
+  }
+  if (key === "Enter") {
+    return "enter";
+  }
+  return key.toLowerCase();
+};
+
+const highlightKey = (keyId) => {
+  const match = keyboardKeys.find((keyEl) => keyEl.dataset.key === keyId);
 const highlightKey = (key, isSpace) => {
   const match = keyboardKeys.find((keyEl) => {
     if (isSpace) {
